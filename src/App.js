@@ -20,8 +20,7 @@ function App() {
 
 
 function Home() {
-
-
+  
   const [Favorites, setFavorite] = useState([])
 
   useEffect(() => {
