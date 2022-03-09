@@ -25,8 +25,9 @@ function Home() {
   const [Favorites, setFavorite] = useState([])
 
   useEffect(() => {
-    console.log(Favorites)
-  })
+    if (Favorites.length > 0)
+      localStorage.setItem('pictureUrl', Favorites.join(","))
+  }, [Favorites])
 
   const [imgUrl, setImgUrl] = useState();
   useEffect(() => {
@@ -42,12 +43,10 @@ function Home() {
     else {
       setImgUrl(data.url)
     }
-    console.log(data.url)
   }
 
   const addFavorite = () => {
       setFavorite(Favorites => [...Favorites, imgUrl])
-      localStorage.setItem('pictureUrl', imgUrl)
   }
   
   return (
@@ -57,15 +56,17 @@ function Home() {
       }}> Random Dog </h1>
 
       <div className="App">
-        <img 
+        <img className="myImage" 
           style={{
             resizeMode: "contain",
-            height: '100%',
-            width: '100%'
+            height: '60%',
+            width: '60%',
+            marginBottom: "5px",
           }}
           src={imgUrl}
           alt="Chien"
         /> 
+        <br />
         <button className="button-green" onClick={(fetchDog)}> 
           Get another random dog
         </button><br/>
@@ -82,22 +83,30 @@ function Home() {
 }
 
 function Favoris() {
-  var dog = localStorage.getItem('pictureUrl');
-  console.log(dog)
+  var dog = localStorage.getItem('pictureUrl').split(",");
+
+  // dog.forEach(element => {
+  //   console.log("dogurl :" + element)
+  // });
+
+
   return( 
     <div className= "myBody">
     <p>
         Favorites
     </p>
-    <img 
-    style={{
-      resizeMode: "contain",
-      height: '100%',
-      width: '100%'
-    }}
-    src={dog}
-    alt="Chien"
-  /> 
+     {dog?.map( (element) => (
+       <img className="myImage" 
+       style={{
+         resizeMode: "contain",
+         height: '60%',
+         width: '60%',
+         marginBottom: "5px",
+       }}
+       src={element}
+       alt="Chien"
+      /> 
+     ))}
   <nav>
     <Link className="button-red" to="/"> Home </Link>
   </nav>
@@ -109,11 +118,3 @@ function Favoris() {
 
 
 export default App;
-
-{/* <Router>
-        <Routes>
-          <Route path="/" element={Home}/>
-          <Route path="/favoris" element={<Favoris />} />
-        </Routes>
-      </Router>
-      <Navbar/> */}
