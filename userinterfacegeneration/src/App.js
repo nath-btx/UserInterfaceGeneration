@@ -5,36 +5,48 @@ import React, { useState, useEffect,  } from 'react';
 
 function App() {
 
-  const [img, setImg] = useState();
-
+  const [imgUrl, setImgUrl] = useState();
   useEffect(() => {
-    setImg(fetchData())
-  })
+    fetchDog()
+  }, [])
+  const fetchDog = async() => {
+
+    let data = await fetch("https://random.dog/woof.json")
+    data = await data.json()
+    console.log(data.url)
+    setImgUrl(data.url)
+    // fetch("https://random-d.uk/api/v2")
+    //       .then((response) => response.json()).then((data) => data.url)
+  }
+  
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+        <img 
+        style={{
+            resizeMode: "contain",
+            height: '100%',
+            width: '100%'
+          }}
+          src={imgUrl} alt="Chien"/> 
       
     </div>
   );
 }
 
-const fetchData = () => {
-  return fetch("https://aws.random.cat/meow")
-        .then((response) => response.json())
-      }
+// const styles = StyleSheet.create({
+//   container: {
+//     display: "flex",
+//     flexDirection: "vertical",
+//     justifyContent: "space-around",
+//     alignItems: "center",
+//     height: "100%",
+//     textAlign: "center"
+//   },
+//   image: {
+//     width: '100px',
+//     length: '100px',
+//   },
+// });
 
       
 
